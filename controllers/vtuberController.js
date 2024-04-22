@@ -4,10 +4,17 @@ const asyncHandler = require('express-async-handler');
 
 
 exports.vtuber = asyncHandler(async (req,res,next) => {
-    const search = req.params
-    const result = await Vtuber.findOne( {first_name: req.params.name} )
+    const result = await Vtuber.findOne({ 
+        first_name: { 
+            $regex: new RegExp(req.params.name, 'i') 
+        } 
+    })
     .exec();
-    res.send(result);
+    if (!result) {
+        res.status(404).send("Vtuber not found");
+    } else {
+        res.send(result);
+    }
 });
 
 exports.vtuber_list = asyncHandler(async (req, res, next) => {
