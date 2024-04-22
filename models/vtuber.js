@@ -23,6 +23,8 @@ const VtuberSchema = new mongoose.Schema({
     },
 }, {collection: 'vtuberwordle'});
 
+VtuberSchema.index({first_name:1},{last_name:1});
+
 
 VtuberSchema.virtual('name').get(function () {
     let fullname = '';
