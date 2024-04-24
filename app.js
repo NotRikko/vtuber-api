@@ -1,8 +1,10 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 
 const indexRouter = require('./routes/index');
@@ -13,12 +15,19 @@ const app = express();
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://Rikko:Lolipop123@cluster0.ieg2exc.mongodb.net/Vtubers?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDB = process.env.DATABASE_URL;
 
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
 }
+
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from this origin
+  methods: ['GET'], // Allow these HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+  optionsSuccessStatus: 200 // Respond with 200 for OPTIONS requests
+}));
 
 
 // view engine setup
