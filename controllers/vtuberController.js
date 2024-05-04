@@ -1,7 +1,21 @@
 const Vtuber = require('../models/vtuber');
 const asyncHandler = require('express-async-handler');
+const cron = require('node-cron');
 
+let dailyVtuber = null;
 
+cron.schedule('0 0 * * *', async () => {
+    const vtubers = await Vtuber.find({});
+    dailyVtuber =  vtubers[Math.floor(vtubers.length*Math.random())];
+});
+
+exports.daily_vtuber = asyncHandler(async (req, res, next) => {
+    if(!dailyVtuber) {
+        const vtubers = await Vtuber.find({});
+        dailyVtuber =  vtubers[Math.floor(vtubers.length*Math.random())];
+        res.status(200).json(dailyVtuber);
+    }
+});
 
 exports.vtuber = asyncHandler(async (req,res,next) => {
     const result = await Vtuber.findOne({ 
@@ -21,5 +35,5 @@ exports.vtuber_list = asyncHandler(async (req, res, next) => {
     const result = await Vtuber.find({})
     .sort({ first_name: 1 })
     .exec()
-    res.send(result)
-})
+    res.status(200).json(result)
+});
