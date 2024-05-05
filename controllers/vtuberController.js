@@ -4,15 +4,16 @@ const cron = require('node-cron');
 
 let dailyVtuber = null;
 
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('*/15 * * * * *', async () => {
     const vtubers = await Vtuber.find({});
     dailyVtuber =  vtubers[Math.floor(vtubers.length*Math.random())];
 });
 
 exports.daily_vtuber = asyncHandler(async (req, res, next) => {
     if(!dailyVtuber) {
-        const vtubers = await Vtuber.find({});
-        dailyVtuber =  vtubers[Math.floor(vtubers.length*Math.random())];
+        dailyVtuber = await Vtuber.findOne({ first_name: "Enna"});
+        res.send(dailyVtuber)
+    } else {
         res.status(200).json(dailyVtuber);
     }
 });
