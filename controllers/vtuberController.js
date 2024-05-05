@@ -4,9 +4,11 @@ const cron = require('node-cron');
 
 let dailyVtuber = null;
 
-cron.schedule('*/15 * * * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
     const vtubers = await Vtuber.find({});
     dailyVtuber =  vtubers[Math.floor(vtubers.length*Math.random())];
+}, {
+    timezone: "America/Los_Angeles"
 });
 
 exports.daily_vtuber = asyncHandler(async (req, res, next) => {
