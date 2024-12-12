@@ -22,7 +22,7 @@ async function main() {
 }
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from this origin
+  origin: 'https://vtuber-wordle.onrender.com/', // Allow requests from this origin
   methods: ['GET'], // Allow these HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
   optionsSuccessStatus: 200 // Respond with 200 for OPTIONS requests
